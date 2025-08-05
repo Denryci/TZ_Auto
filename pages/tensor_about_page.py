@@ -4,10 +4,12 @@ from selenium.webdriver.support import expected_conditions as EC
 
 class TensorAboutPage(BasePage):
 
+    # Локаторы основных элементов на странице
     PAGE_URL = "https://tensor.ru/about"
     WORK_GALLERY = ("xpath", "//div[@class='tensor_ru-container tensor_ru-section tensor_ru-About__block3']//div[@class='s-Grid-container']")
 
-    def return_about_photos_sizes(self):
+    # Функция для получения картинок из блока "Работаем"
+    def get_work_photos(self):
         gallery = self.wait.until(EC.presence_of_element_located(self.WORK_GALLERY))
         images = gallery.find_elements(By.TAG_NAME, "img")
 
