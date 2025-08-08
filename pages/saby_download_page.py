@@ -1,6 +1,5 @@
 from pages.base_page import BasePage
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
 
 class SabyDownloadPage(BasePage):
 
@@ -17,18 +16,11 @@ class SabyDownloadPage(BasePage):
     # Настройка драйвера для скачивания установщика
     def set_download_directory(self, download_dir):
         if isinstance(self.driver, webdriver.Chrome):
-            options = Options()
-            options.add_argument("--safebrowsing-disable-download-protection")
-            options.add_argument("safebrowsing-disable-extension-blacklist")
-            prefs = {
-                "download.default_directory": download_dir,
-                "download.prompt_for_download": False,
-                "download.directory_update": True,
-                "safebrowsing_enabled": False
-            }
-            options.add_experimental_option("prefs", prefs)
-            self.driver.capabilities.update(options.to_capabilities())
+            self.driver.execute_cdp_cmd("Page.setDownloadBehavior", {
+                "behavior": "allow",
+                "downloadPath": download_dir
+            })
 
-    # Скачать файл по ссылке
+    # Скачать файл по клику по ссылке
     def file_download(self):
         self.driver.find_element(*self.DOWNLOAD_BUTTON).click()

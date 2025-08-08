@@ -15,6 +15,10 @@ class SabyContactsPage(BasePage):
     KAMCHATKA_KRAY_CODE = "41-kamchatskij-kraj"
     YAROSLAVL_OBLAST_CODE = "76-yaroslavskaya-oblast"
 
+    KAMCHATKA_KRAY_TEXT = "Камчатский край"
+    YAROSLAVL_OBLAST_TEXT = "Ярославская область"
+    YAROSLAVL_OBLAST_TEXT_SHORT = "Ярославская обл."
+
     # Переход по ссылке Saby/contacts -> Tensor (target=_blank)
     def go_to_tensor(self):
         original_window = self.driver.current_window_handle
@@ -48,7 +52,7 @@ class SabyContactsPage(BasePage):
             for partner in partners:
                 item_key = partner.get_attribute("item-key")
                 if item_key:
-                    partner_arr.append(item_key)
+                    partner_arr.append(int(item_key))
             return partner_arr
         except NoSuchElementException:
             assert False, "Список регионов не обнаружен на странице"
