@@ -1,11 +1,7 @@
 import pytest
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException
-import os
+from selenium.common.exceptions import NoSuchElementException
 
 from pages.saby_page import SabyPage
-from pages.tensor_page import TensorPage
 from pages.tensor_about_page import TensorAboutPage
 
 class TestTensorBlockAndPhotos:
@@ -21,8 +17,12 @@ class TestTensorBlockAndPhotos:
         # 3. Перейдём Saby/contacts -> Tensor
         tensor_page = contact_page.go_to_tensor()
 
-        # В случае ненахождения возникает AssertError
-        strength_block = tensor_page.find_element(tensor_page.US_DIV)
+        # 4. Проверим блок "Сила в людях". В случае ненахождения find_element возвращает AssertError
+        try:
+            strength_block = tensor_page.driver.find_element(*tensor_page.US_DIV)
+        except NoSuchElementException:
+            assert False, "Элемент US_DIV не найден на странице"
+
         assert "Сила в людях" in strength_block.text, "В блоке 'Сила в людях' ошибка с текстом"
 
         # 5. Переходим в раздел "Подробнее", Tensor -> Tensor/about

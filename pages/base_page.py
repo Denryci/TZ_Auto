@@ -24,11 +24,5 @@ class BasePage:
     def get_current_url(self):
         return self.driver.current_url
 
-    def find_element(self, locator):
-        try:
-            element = WebDriverWait(self.driver, 10).until(
-                EC.presence_of_element_located(locator)
-            )
-            return element
-        except TimeoutException:
-            raise AssertionError(f"Элемент с локатором {locator} не был найден")
+    def get_title(self):
+        return self.driver.title
